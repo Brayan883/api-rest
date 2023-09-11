@@ -1,49 +1,26 @@
 import { Router } from "express";
-import { login, register } from "../controllers/auth.controller.js";
-import { body } from "express-validator";
-import { validationResultError } from "../middlewares/ValidationResult.js";
+import {
+  login,
+  register,
+  infoUser,
+  registerRefresh,
+  logout,
+} from "../controllers/auth.controller.js";
+
+import { AuthPage } from "../middlewares/AuthToken.js";
+import { requiereRefreshToken } from "../middlewares/refleshtokenAuth.js";
+
+import {
+  ValidationLogin,
+  ValidationRegister,
+} from "../middlewares/ValidationMiddleware.js";
 
 const router = Router();
 
-router.post(
-  "/register",
-  [
-    body("email", "Por favor ingrese un email válido")
-      .trim()
-      .isEmail()
-      .normalizeEmail(),
-    body(
-      "password",
-      "Por favor ingrese una contraseña válida minima de 6 caracteres"
-    )
-      .trim()
-      .isLength({ min: 6 })
-      .custom((value, { req }) => {
-        if (value !== req.body.confirmPassword) {
-          throw new Error("Las contraseñas no coinciden");
-        }
-        return value;
-      }),
-  ],
-  validationResultError,
-  register
-);
-router.post(
-  "/login",
-  [
-    body("email", "Por favor ingrese un email válido")
-      .trim()
-      .isEmail()
-      .normalizeEmail(),
-    body(
-      "password",
-      "Por favor ingrese una contraseña válida minima de 6 caracteres"
-    )
-      .trim()
-      .isLength({ min: 6 }),
-  ],
-  validationResultError,
-  login
-);
+router.post("/register", ValidationRegister, register);
+router.post("/login", ValidationLogin, login);
+router.get("/info", AuthPage, infoUser);
+router.get("/refresh", requiereRefreshToken, registerRefresh);
+router.get("/logout", logout);
 
 export default router;

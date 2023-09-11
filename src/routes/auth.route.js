@@ -1,13 +1,11 @@
 import { Router } from "express";
 import {
   login,
-  register,
-  infoUser,
+  register,  
   registerRefresh,
   logout,
 } from "../controllers/auth.controller.js";
 
-import { AuthPage } from "../middlewares/AuthToken.js";
 import { requiereRefreshToken } from "../middlewares/refleshtokenAuth.js";
 
 import {
@@ -19,7 +17,6 @@ const router = Router();
 
 router.post("/register", ValidationRegister, register);
 router.post("/login", ValidationLogin, login);
-router.get("/info", AuthPage, infoUser);
 router.get("/refresh", requiereRefreshToken, registerRefresh);
 router.get("/logout", logout);
 

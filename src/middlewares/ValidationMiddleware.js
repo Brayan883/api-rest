@@ -7,7 +7,7 @@ const validationResultError = (req, res, next) => {
   if (!errors.isEmpty()) {
     errors.array().map((err) =>
       extractedErrors.push({
-        [err.path]: err.msg,
+        ["message"]: err.msg,
       })
     );
 

@@ -18,7 +18,8 @@ const router = Router();
 
 router.post("/register", AuthPage, ValidationRegister, register);
 router.post("/login", ValidationLogin, login);
-router.get("/refresh", requiereRefreshToken, registerRefresh);
+router.post("/register", AuthPage, ValidationRegister, register);
+router.get("/refresh",  requiereRefreshToken, registerRefresh);
 router.get("/logout", AuthPage, logout);
 
 export default router;

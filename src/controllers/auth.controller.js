@@ -16,10 +16,14 @@ const register = async (req, res) => {
       return res.status(400).json({ message: "ya existe este usuario" });
 
     const userCreate = await prismadb.user.create({
+      select: {
+        id: true,
+        email: true,
+      },
       data: {
         email,
         password,
-      },
+      },      
     });
 
     return res.status(201).json({ userCreate });

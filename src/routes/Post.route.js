@@ -19,7 +19,6 @@ const router = Router();
 router.get("/", AuthPage, listPost);
 router.get("/:id", AuthPage, validatioParams, findPost);
 router.get("/search/posts", AuthPage, validationQuery, searchPost);
-
 router.post("/", AuthPage, validatioData, createPost);
 router.patch("/:id", AuthPage, validatioParams, validatioData, updatePost);
 router.delete("/:id", AuthPage, validatioParams, deletePost);

@@ -23,14 +23,18 @@ app.use(
 // Middleware de manejo de CORS
 const listWhitelist = [process.env.permission];
 app.use(
-  cors((origin, callback) => {
-    if (!origin || listWhitelist.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error(`Origin ${origin} no es permitido`));
-    }
+  cors({
+    origin: (origin, callback) => {
+      if ( listWhitelist.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`Origin ${origin} no es permitido`));
+      }
+    },
+    credentials: true, 
   })
 );
+
 
 // Middleware de manejo de cookies y JSON
 app.use(cookieParser());

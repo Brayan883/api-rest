@@ -38,7 +38,7 @@ const findPost = async (req, res) => {
 
 const createPost = async (req, res) => {
   const { title, content, published } = req.body;
-
+  console.log(title, content, published);
   try {
     const post = await prismadb.post.create({
       data: {
@@ -62,9 +62,18 @@ const updatePost = async (req, res) => {
   const { id } = req.params;
   const { title, content, published } = req.body;
   try {
-    const post = await prismadb.post.update({
+    const FindPost = await prismadb.post.findUnique({
       where: {
         id: parseInt(id),
+      },
+    });
+
+    if (!FindPost)
+      return res.status(404).json({ message: "Post no encontrado" });
+
+    const post = await prismadb.post.update({
+      where: {
+        id: parseInt(FindPost.id),
       },
       data: {
         title,
@@ -86,9 +95,18 @@ const deletePost = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const post = await prismadb.post.delete({
+    const FindPost = await prismadb.post.findUnique({
       where: {
         id: parseInt(id),
+      },
+    });
+
+    if (!FindPost)
+      return res.status(404).json({ message: "Post no encontrado" });
+
+    const post = await prismadb.post.delete({
+      where: {
+        id: parseInt(FindPost.id),
       },
     });
 

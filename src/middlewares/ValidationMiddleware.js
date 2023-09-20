@@ -59,14 +59,16 @@ const validatioParams = [
     .isInt()
     .escape()
     .notEmpty()
-    .custom(async (value, { req }) => {
+    .custom(async (value, { req }) => {      
+      if (!value  || typeof value !== "number")
+        throw new Error("Id no válido");        
+      
       const findPost = await prismadb.post.findUnique({
         where: {
           id: parseInt(value),
         },
       });
             
-
       if (!findPost || findPost.authorId !== req.uid)
         throw new Error("El post no existe");
 

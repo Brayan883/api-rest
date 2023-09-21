@@ -38,7 +38,7 @@ const findPost = async (req, res) => {
 
 const createPost = async (req, res) => {
   const { title, content, published } = req.body;
-  console.log(title, content, published);
+    
   try {
     const post = await prismadb.post.create({
       data: {

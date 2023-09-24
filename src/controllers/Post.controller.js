@@ -38,14 +38,23 @@ const findPost = async (req, res) => {
 
 const createPost = async (req, res) => {
   const { title, content, published } = req.body;
-    
+
   try {
+    const FindPost = await prismadb.user.findUnique({
+      where: {
+        id: req.uid,
+      },
+    });
+
+    if (!FindPost)
+      return res.status(404).json({ message: "Post no encontrado" });
+
     const post = await prismadb.post.create({
       data: {
         title,
         content,
         published,
-        authorId: req.uid,
+        authorId: FindPost.id,
       },
     });
 
